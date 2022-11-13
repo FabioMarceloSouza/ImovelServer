@@ -23,9 +23,20 @@ namespace entrevistaServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ClienteRequest request)
         {
-            var cliente  = await _clienteRepository.CreateCliente(request);
+            try
+            {
+                var cliente  = await _clienteRepository.CreateCliente(request);
 
-            return StatusCode(201, cliente);
+                return StatusCode(201, cliente);
+            }
+            catch (System.Exception ex)
+            {
+                
+                return BadRequest(new {
+                    error = true,
+                    message = ex.Message
+                });
+            }
         }
 
         [HttpGet]
