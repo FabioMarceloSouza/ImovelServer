@@ -20,6 +20,17 @@ namespace entrevistaServer.Repositories
         }
         public async Task<ClienteResponse> CreateCliente(ClienteRequest request)
         {
+            var clienteCompareEmail = await _context.Clientes.FirstOrDefaultAsync(e => e.Email == request.Email );
+            var clienteCompareCpfOuCnpj = await _context.Clientes.FirstOrDefaultAsync(e => e.CpfOuCnpj == request.CpfOuCnpj );
+
+            if(clienteCompareEmail != null){
+                throw new Exception("Email já existe!");
+            }
+
+            if(clienteCompareCpfOuCnpj != null){
+                 throw new Exception("Cpf ou Cnpj já existe!");
+            }
+
             var cliente  = new Cliente {
                 Name = request.Name,
                 Email = request.Email,
